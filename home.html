@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MPEG-DASH Player</title>
+    <!-- Include dash.js library -->
+    <script src="https://cdn.dashjs.org/latest/dash.all.min.js"></script>
+</head>
+<body>
+    <h1>MPEG-DASH Player</h1>
+    <video id="videoPlayer" controls width="640" height="360"></video>
+
+    <script>
+        // Initialize the player
+        const videoPlayer = document.getElementById('videoPlayer');
+        const player = dashjs.MediaPlayer().create();
+
+        // Configure the player with the manifest URL
+        const manifestUrl = 'http://localhost:8000/stream-dash'; // Replace with your server URL
+        player.initialize(videoPlayer, manifestUrl, true);
+
+        // Optional: Event handling for player events (e.g., error handling)
+        player.on(dashjs.MediaPlayer.events.ERROR, function (e) {
+            console.error('Error encountered:', e);
+        });
+    </script>
+</body>
+</html>

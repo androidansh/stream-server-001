@@ -51,14 +51,15 @@ app.get("/",function(req,res){
 })
 
 
-app.get("/stream-dash",function(req,res){
-    const videoPath = 'oggy-dash/'; // Path to your DASH content directory
+app.get("/stream-dash2",function(req,res){
+    const videoPath = 'oggy_dash/'; // Path to your DASH content directory
         const manifestFile = path.join(videoPath, 'output.mpd'); // Example manifest file
         // const segmentDir = path.join(videoPath, 'segments/'); // Example segment directory
         const segmentDir = path.join(videoPath); 
+        console.log(req.headers)
 
         // Serve the manifest file
-        if (req.headers.accept.includes('application/dash+xml')) {
+        if (req.headers.accept.includes('*/*')) {
             fs.readFile(manifestFile, (err, data) => {
                 if (err) {
                     console.error('Error reading manifest file:', err);
@@ -113,3 +114,67 @@ app.get("/stream-dash",function(req,res){
             console.log("EErro")
         }
 })
+
+
+
+app.get('/stream-dash', (req, res) => {
+    const manifestFile = path.join(__dirname, 'oggy_dash/output.mpd');
+    fs.readFile(manifestFile, (err, data) => {
+        if (err) {
+            console.error('Error reading manifest file:', err);
+            res.status(500).send('Error reading manifest file');
+            return;
+        }
+
+        res.setHeader('Content-Type', 'application/dash+xml');
+        res.send(data);
+    });
+});
+
+// Serve DASH segment files
+app.get('/:segment', (req, res) => {
+    console.log("inside the segment api")
+    const segmentPath = path.join(__dirname, 'oggy_dash', req.params.segment);
+    console.log(segmentPath)
+    fs.stat(segmentPath, (err, stat) => {
+        if (err || !stat.isFile()) {
+            console.error('Segment file not found:');
+            console.log(err)
+            res.status(404).send('Segment file not found');
+            return;
+        }
+
+        const range = req.headers.range;
+        // console.log("Header data = ")
+        // console.log(req)
+        //let positions = [0]
+        // if (!range) {
+        //     res.status(416).send('Requires Range header');
+        // }
+        
+        // positions = range.replace(/bytes=/, "").split("-");
+        
+        // const start = parseInt(positions[0], 10);
+        const start = 0;
+        const total = stat.size;
+        const end = total - 1;
+        const chunksize = (end - start) + 1;
+        // const end = positions[1] ? parseInt(positions[1], 10) : total - 1;
+        
+
+        // res.setHeader('Content-Range', );
+        // res.setHeader('Accept-Ranges', 'bytes');
+        // res.setHeader('Content-Length', chunksize);
+        // res.setHeader('Content-Type', 'video/mp4');
+
+        const headers = {
+            "Content-Range":`bytes ${start}-${end}/${total}`,
+            "Accept-Ranges":"bytes",
+            "Content-Length":chunksize,
+            "Content-Type":"video/mp4"
+        };
+        res.writeHead(206,headers)
+        const stream = fs.createReadStream(segmentPath, { start, end });
+        stream.pipe(res);
+    });
+});

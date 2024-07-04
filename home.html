@@ -18,7 +18,9 @@
         const player = dashjs.MediaPlayer().create();
 
         // Configure the player with the manifest URL
-        const manifestUrl = 'http://localhost:8000/stream-dash'; // Replace with your server URL
+        const manifestUrl = 'http://localhost:8000/stream-dash';  
+        // const manifestUrl = 'http://10.2.2/stream-dash';  
+        // const manifestUrl = 'https://stream-server-001.onrender.com/stream-dash'; 
         player.initialize(videoPlayer, manifestUrl, true);
 
         // Optional: Event handling for player events (e.g., error handling)

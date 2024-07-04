@@ -23,7 +23,7 @@
 				</SegmentTemplate>
 			</Representation>
 		</AdaptationSet>
-		<AdaptationSet id="1" contentType="audio" startWithSAP="1" segmentAlignment="true" bitstreamSwitching="true" lang="eng">
+		<!-- <AdaptationSet id="1" contentType="audio" startWithSAP="1" segmentAlignment="true" bitstreamSwitching="true" lang="eng">
 			<Representation id="1" mimeType="audio/mp4" codecs="mp4a.40.2" bandwidth="128000" audioSamplingRate="44100">
 				<AudioChannelConfiguration schemeIdUri="urn:mpeg:dash:23003:3:audio_channel_configuration:2011" value="2" />
 				<SegmentTemplate timescale="44100" initialization="init_stream$RepresentationID$.m4s" media="chunk_stream$RepresentationID$_$Numberd$.m4s" startNumber="1">
@@ -34,6 +34,6 @@
 					</SegmentTimeline>
 				</SegmentTemplate>
 			</Representation>
-		</AdaptationSet>
+		</AdaptationSet> -->
 	</Period>
 </MPD>

@@ -1,6 +1,7 @@
 const express = require("express")
 const fs = require("fs")
 const app = express()
+const cloudinary = require('cloudinary').v2;
 const path = require('path');
 const cors = require('cors')
 
@@ -183,14 +184,85 @@ app.get('/stream-dash3', (req, res) => {
 //     });
 // });
 
-app.get('/stream-dash', (req, res) => {
-    const dashManifestPath = path.join(__dirname, 'oggy_dash', 'output.mpd');
+
+// // server for android
+// app.get('/stream-dash', (req, res) => {
+//     const dashManifestPath = path.join(__dirname, 'oggy_dash', 'output.mpd');
+//     res.sendFile(dashManifestPath);
+// });
+
+// // // Serve the video segments
+// app.get('/:segment', (req, res) => {
+//     const segmentPath = path.join(__dirname, 'oggy_dash', req.params.segment);
+//     // console.log(segmentPath)
+//     res.sendFile(segmentPath);
+// });
+
+
+
+// app.get('/stream-dash4', (req, res) => {
+//     const dashManifestPath = path.join(__dirname, 'oggy2Dash', 'stream.mpd');
+//     res.sendFile(dashManifestPath);
+// });
+
+// // Serve the video segments
+// app.get('/:segment', (req, res) => {
+//    // console.log("<-------------------Request----------------------->")
+//    // console.log(req)
+//     const segmentPath = path.join(__dirname, 'oggy2Dash', req.params.segment);
+//     // console.log(segmentPath)
+//     res.sendFile(segmentPath);
+// });
+
+
+
+
+// in this api user will provide which video he wants to stream
+app.get('/video/:id/stream-dash5', (req, res) => {
+    const dashManifestPath = path.join(__dirname, req.params.id, 'output.mpd');
+    
     res.sendFile(dashManifestPath);
+
 });
 
 // Serve the video segments
-app.get('/:segment', (req, res) => {
-    const segmentPath = path.join(__dirname, 'oggy_dash', req.params.segment);
-    // console.log(segmentPath)
+app.get('/video/:id/:segment', (req, res) => {
+    const segmentPath = path.join(__dirname, req.params.id, req.params.segment);
     res.sendFile(segmentPath);
 });
+
+
+// Configure Cloudinary
+cloudinary.config({
+    cloud_name: 'dfshwcvxu',
+    api_key: '171136177283262',
+    api_secret: '-PfMWe3k0EH5AJi1EyiIqI_6XhE'
+});
+  // Serve the MPD file
+  app.get('/stream/:folderName', async (req, res) => {
+    const folderName = req.params.folderName;
+    const mpdFilePath = `${folderName}/output.mpd`;
+  
+    try {
+      const mpdUrl = cloudinary.url(mpdFilePath, { resource_type: 'raw' });
+      res.redirect(mpdUrl);
+    } catch (error) {
+      console.error(error);
+      res.status(500).send('Error fetching MPD file');
+    }
+  });
+  
+  // Serve the video segments
+  app.get('/stream/:folderName/:segment', async (req, res) => {
+    const folderName = req.params.folderName;
+    const segment = req.params.segment;
+    const segmentFilePath = `${folderName}/${segment}`;
+  
+    try {
+      const segmentUrl = cloudinary.url(segmentFilePath, { resource_type: 'raw' });
+      res.redirect(segmentUrl);
+    } catch (error) {
+      console.error(error);
+      res.status(500).send('Error fetching video segment');
+    }
+  });

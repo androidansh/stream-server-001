@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -7,18 +8,73 @@
     <title>MPEG-DASH Player</title>
     <!-- Include dash.js library -->
     <script src="https://cdn.dashjs.org/latest/dash.all.min.js"></script>
+    <style>
+        body {
+            width: 50vw;
+            height: 100vh;
+            background-color: aqua;
+        }
+
+        .main {
+            display: flex;
+            flex-direction: column;
+            width: 50%;
+        }
+
+        .btn-css {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+    </style>
 </head>
+
 <body>
     <h1>MPEG-DASH Player</h1>
-    <video id="videoPlayer" controls width="640" height="360"></video>
+    <div class="main">
+        <div class="btn-css">
+            <button id="previous">Previous </button>
+            <button id="next">Next </button>
+        </div>
+        <video id="videoPlayer" controls width="800" height="500"></video>
+    </div>
 
     <script>
+        const prevBtn = document.querySelector('#previous')
+        const nextBtn = document.querySelector('#next')
+
         // Initialize the player
         const videoPlayer = document.getElementById('videoPlayer');
         const player = dashjs.MediaPlayer().create();
 
-        // Configure the player with the manifest URL
-        const manifestUrl = 'http://localhost:8000/stream-dash';  
+        // // Configure the player with the manifest URL
+        // const manifestUrl = 'http://localhost:8000/stream/oggy2Dash';
+        // // const manifestUrl = 'http://10.2.2/stream-dash';  
+        // // const manifestUrl = 'https://stream-server-001.onrender.com/stream-dash'; 
+        // player.initialize(videoPlayer, manifestUrl, true);
+
+        // // Optional: Event handling for player events (e.g., error handling)
+        // player.on(dashjs.MediaPlayer.events.ERROR, function (e) {
+        //     console.error('Error encountered from front-end:');
+        //     console.log(e)
+        // });
+
+        prevBtn.addEventListener('click', () => {
+            // Configure the player with the manifest URL
+            const manifestUrl = 'http://localhost:8000/stream/oggy2Dash';
+            // const manifestUrl = 'http://10.2.2/stream-dash';  
+            // const manifestUrl = 'https://stream-server-001.onrender.com/stream-dash'; 
+            player.initialize(videoPlayer, manifestUrl, true);
+
+            // Optional: Event handling for player events (e.g., error handling)
+            player.on(dashjs.MediaPlayer.events.ERROR, function (e) {
+                console.error('Error encountered from front-end:');
+                console.log(e)
+            });
+        })
+        nextBtn.addEventListener('click',()=>{
+             // Configure the player with the manifest URL
+        const manifestUrl = 'http://localhost:8000/stream/oggy_Dash';
         // const manifestUrl = 'http://10.2.2/stream-dash';  
         // const manifestUrl = 'https://stream-server-001.onrender.com/stream-dash'; 
         player.initialize(videoPlayer, manifestUrl, true);
@@ -28,6 +84,8 @@
             console.error('Error encountered from front-end:');
             console.log(e)
         });
+        })
     </script>
 </body>
+
 </html>

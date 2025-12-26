@@ -2,9 +2,9 @@ const cloudinary = require('cloudinary').v2;
 
 // Configure Cloudinary
 cloudinary.config({
-    cloud_name: 'dfshwcvxu',
-    api_key: '171136177283262',
-    api_secret: '-PfMWe3k0EH5AJi1EyiIqI_6XhE'
+    cloud_name: '',
+    api_key: '',
+    api_secret: '-PfMWe3k0E1EyiIqI_6XhE'
 });
 
 // Function to delete a single asset

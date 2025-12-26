@@ -4,9 +4,9 @@ const path = require('path');
 
 // Configure Cloudinary
 cloudinary.config({
-    cloud_name: 'dfshwcvxu',
-    api_key: '171136177283262',
-    api_secret: '-PfMWe3k0EH5AJi1EyiIqI_6XhE'
+    cloud_name: '',
+    api_key: '',
+    api_secret: '-PfMWIqI_6XhE'
 });
 
 // Function to upload a file to Cloudinary

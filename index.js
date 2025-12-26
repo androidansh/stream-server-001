@@ -235,8 +235,8 @@ app.get('/video/:id/:segment', (req, res) => {
 // Configure Cloudinary
 cloudinary.config({
     cloud_name: 'dfshwcvxu',
-    api_key: '171136177283262',
-    api_secret: '-PfMWe3k0EH5AJi1EyiIqI_6XhE'
+    api_key: '',
+    api_secret: ''
 });
   // Serve the MPD file
   app.get('/stream/:folderName', async (req, res) => {
